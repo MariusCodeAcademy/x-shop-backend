@@ -20,4 +20,20 @@
 
 11. susikurti .env ir .env.sample failus, patalpinti prisijungimo strintga .env ir panaudoti ji prisijungimui
 
-12. pakurti post routa '/shop/categories/new' kuris priima title stringa ir prideda ji kaip kategorija
+12. pakurti post routa 'api/shop/categories/new' kuris priima title stringa ir prideda ji kaip kategorija
+
+13. sukurt modeli produktui
+
+{
+          _id: 1,
+          title: 'Green hat',
+          price: 99.99,
+          salePrice: 49.9,
+          image: 'acc_hat_01_',
+          color: 'green',
+          size: 'normal',
+          images: [1, 2, 3, 4, 5],
+          sku: 'hat_01',
+          quantity: 9,
+          category: 'liink to ccat id',
+        },
