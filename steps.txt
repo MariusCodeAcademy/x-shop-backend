@@ -37,3 +37,29 @@
           quantity: 9,
           category: 'liink to ccat id',
         },
+
+14. sukurti cart modeli 
+{
+          _id: 1,
+          title: 'Green hat',
+          price: 99.99,
+          image: 'acc_hat_01_',
+          color: 'green',
+          size: 'normal',
+          sku: 'hat_01',
+          quantity: 1,
+          // userId: 'links to user',
+        },
+15. sukurti user modeli 
+{
+    _id: 1
+    name: "Bob"
+    uemail: 'Bob@stone.com'
+    password: 'sdsdsd'
+}
+
+16. sukurti post routa kurio pagalba ivestume itema i sarasa
+
+17. sukurti itemu kopijas duomenu bazeje to ka turim state
+
+18 sukurti 2 userius pagal user modeli 
