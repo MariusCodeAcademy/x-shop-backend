@@ -1,0 +1,24 @@
+{
+  "name": "shop-x-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MariusCodeAcademy/x-shop-backend.git"
+  },
+  "keywords": [],
+  "author": "Marius Kuzminskas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MariusCodeAcademy/x-shop-backend/issues"
+  },
+  "homepage": "https://github.com/MariusCodeAcademy/x-shop-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}
