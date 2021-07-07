@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 // { title: string, body: string, .. }
 
-const postSchema = new Schema(
+const shopCatSchema = new Schema(
   {
     title: {
       type: String,
@@ -17,6 +17,6 @@ const postSchema = new Schema(
 
 // exportuoti naujai sukurta objekta pagal sia schema
 //                           turetu buti vienaskai musu kolecijos pav.
-const Post = mongoose.model('post', postSchema);
+const ShopCategory = mongoose.model('shopCategory', shopCatSchema);
 
-module.exports = Post;
+module.exports = ShopCategory;

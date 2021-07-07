@@ -17,9 +17,14 @@ mongoose
 
 // MIddleware
 app.use(morgan('dev'));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).json(`Serveris veikia an port ${PORT}`);
+});
+
+app.post('/api/shop/categories/new', (req, res) => {
+  res.json('you are about to create a category');
 });
 
 app.listen(PORT, console.log(`Back end online on port ${PORT}`));
