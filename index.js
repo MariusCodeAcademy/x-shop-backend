@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const ShopCategory = require('./models/shopCategory');
 
 const app = express();
 
@@ -17,6 +18,7 @@ mongoose
 
 // MIddleware
 app.use(morgan('dev'));
+// leidzia req body gauti kaip json
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -24,7 +26,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/shop/categories/new', (req, res) => {
-  res.json('you are about to create a category');
+  // gauti is userio title
+  console.log(req.body);
+  const titleFromUser = req.body.title;
+  if (!titleFromUser) return res.status(400).json('no title');
+  // su gautu title sukurti nauja categorijja
+  const newCat = new ShopCategory({ title: titleFromUser });
+
+  newCat
+    .save()
+    .then((result) => res.json(['category created', result]))
+    .catch((err) => res.status(500).json('internal error'));
 });
 
 app.listen(PORT, console.log(`Back end online on port ${PORT}`));
