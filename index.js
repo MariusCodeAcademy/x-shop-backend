@@ -25,18 +25,8 @@ app.get('/', (req, res) => {
   res.status(200).json(`Serveris veikia an port ${PORT}`);
 });
 
-app.post('/api/shop/categories/new', (req, res) => {
-  // gauti is userio title
-  console.log(req.body);
-  const titleFromUser = req.body.title;
-  if (!titleFromUser) return res.status(400).json('no title');
-  // su gautu title sukurti nauja categorijja
-  const newCat = new ShopCategory({ title: titleFromUser });
-
-  newCat
-    .save()
-    .then((result) => res.json(['category created', result]))
-    .catch((err) => res.status(500).json('internal error'));
-});
+// routes
+const catRoutes = require('./routes/catRoutes');
+app.use('/', catRoutes);
 
 app.listen(PORT, console.log(`Back end online on port ${PORT}`));
