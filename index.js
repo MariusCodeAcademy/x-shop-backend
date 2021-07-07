@@ -1,9 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 const app = express();
 
 const PORT = 4000;
+
+// prisijungimas prie duomenu bazes
+mongoose
+  .connect('', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => {
+    console.log('Conneced to Mongo ooooooooose');
+  })
+  .catch((err) => console.error(err.message));
 
 // MIddleware
 app.use(morgan('dev'));
