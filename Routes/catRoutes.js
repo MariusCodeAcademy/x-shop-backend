@@ -8,6 +8,7 @@ router.get('/api/shop/categories', (req, res) => {
     .catch((err) => res.status(500).json(err));
 });
 
+// sukurti nauja kategorija
 router.post('/api/shop/categories/new', (req, res) => {
   // gauti is userio title
   console.log(req.body);

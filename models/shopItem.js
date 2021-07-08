@@ -26,8 +26,8 @@ const shopItemSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
-      type: String,
+    sizeQty: {
+      type: [{ size: String, quantity: Number }],
       required: true,
     },
     images: {
@@ -36,10 +36,6 @@ const shopItemSchema = new Schema(
     },
     sku: {
       type: String,
-      required: true,
-    },
-    quantity: {
-      type: Number,
       required: true,
     },
     category: {
