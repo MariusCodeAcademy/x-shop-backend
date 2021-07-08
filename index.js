@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const ShopCategory = require('./models/shopCategory');
 
 const app = express();
@@ -20,6 +21,7 @@ mongoose
 app.use(morgan('dev'));
 // leidzia req body gauti kaip json
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).json(`Serveris veikia an port ${PORT}`);
