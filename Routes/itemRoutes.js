@@ -7,19 +7,18 @@ router.post('/api/shop/items/new', (req, res) => {
   console.log(req.body);
 
   const newItemData = {
-    title: 'Green hat',
-    price: 99.99,
-    salePrice: 49.9,
-    image: 'acc_hat_01_',
-    color: 'green',
+    title: 'Stealth Bomber Jacket',
+    price: 1599.95,
+    image: 'acc_jacket_01_',
+    color: 'navy',
     sizeQty: [
-      { size: 'small', quantity: 10 },
-      { size: 'medium', quantity: 7 },
-      { size: 'large', quantity: 15 },
+      { size: 'small', quantity: 5 },
+      { size: 'medium', quantity: 5 },
+      { size: 'large', quantity: 5 },
     ],
-    images: [1, 2, 3, 4, 5],
-    sku: 'hat_01',
-    category: '60e593a6bf4b829b3784a7ad',
+    images: [1, 2, 3],
+    sku: 'jacket_01',
+    category: '60e593cabf4b829b3784a7b5',
   };
   const newItem = new ShopItem(newItemData);
 
