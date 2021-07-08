@@ -32,7 +32,7 @@ router.post('/api/shop/items/new', (req, res) => {
 // gauti visus items
 router.get('/api/shop/items', async (req, res) => {
   try {
-    const items = await ShopItem.find();
+    const items = await ShopItem.find().populate('category');
     res.json(items);
   } catch (err) {
     res.status(500).json('internal error');
@@ -40,5 +40,13 @@ router.get('/api/shop/items', async (req, res) => {
 });
 
 // gauti single item
+router.get('/api/shop/items/:id', async (req, res) => {
+  try {
+    const item = await ShopItem.findById(req.params.id).populate('category');
+    res.json(item);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
