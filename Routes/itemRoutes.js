@@ -30,6 +30,14 @@ router.post('/api/shop/items/new', (req, res) => {
 });
 
 // gauti visus items
+router.get('/api/shop/items', async (req, res) => {
+  try {
+    const items = await ShopItem.find();
+    res.json(items);
+  } catch (err) {
+    res.status(500).json('internal error');
+  }
+});
 
 // gauti single item
 
