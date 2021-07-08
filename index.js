@@ -30,6 +30,9 @@ app.get('/', (req, res) => {
 // routes
 const catRoutes = require('./routes/catRoutes');
 const itemRoutes = require('./routes/itemRoutes');
+const shopUserRoutes = require('./routes/shopUserRoutes');
+
+app.use('/', shopUserRoutes);
 app.use('/', catRoutes);
 app.use('/', itemRoutes);
 
