@@ -10,7 +10,7 @@ const reqStiring = {
 };
 const userSchema = new Schema(
   {
-    title: reqStiring,
+    name: reqStiring,
     email: reqStiring,
     password: reqStiring,
   },
