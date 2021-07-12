@@ -1,6 +1,12 @@
 const express = require('express');
 const Cart = require('../models/cart');
+const ShopItem = require('../models/shopItem');
 const router = express.Router();
+
+// get count of carts of a user
+router.get('/api/shop/cart/count/:userId', async (req, res) => {
+  console.log('count');
+});
 
 // get user cart
 router.get('/api/shop/cart/:userId', async (req, res) => {
@@ -9,8 +15,10 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
   try {
     // we find all carts of all users
     const allCarts = await Cart.find();
+    console.log(allCarts);
     // find current user cart
     const currentUserCart = allCarts.find((u) => u.userId == req.params.userId);
+
     res.json(currentUserCart.cart);
   } catch (err) {
     res.json(err);
