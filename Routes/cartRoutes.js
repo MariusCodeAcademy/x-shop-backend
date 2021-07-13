@@ -41,8 +41,10 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
   try {
     // ar toks krepselis existuoja
     const currentCart = await Cart.findOne({ userId: req.params.userId }).exec();
+    console.log(' currentCart', currentCart);
     // jei jau yra toks cart tai mes norim prideti prie cart objektu
     if (!currentCart) {
+      console.log('new cart');
       const newCart = await createNewCart(req.params.userId, req.body);
       res.json({ msg: 'created a cart', newCart: newCart });
     } else {
@@ -50,7 +52,11 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
       //currentCartArr esamas krepselis db
       // req.body = naujas item i krepseli
       const currentCartArr = currentCart.cart;
-      increaseQtyOrAddNewItem(isItemVariantInCartAlready(currentCartArr), currentCartArr, req.body);
+      increaseQtyOrAddNewItem(
+        isItemVariantInCartAlready(currentCartArr, req.body),
+        currentCartArr,
+        req.body
+      );
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
       res.json({ msg: 'now in cart', currentCart });
     }
@@ -69,14 +75,15 @@ async function createNewCart(userId, body) {
 function increaseQtyOrAddNewItem(isItemInCartAlready, currentCartArr, body) {
   if (isItemInCartAlready) {
     // qty ++
+    console.log('++');
     isItemInCartAlready.quantity++;
   } else {
     currentCartArr.push(body);
   }
 }
 
-function isItemVariantInCartAlready(currentCartArr) {
-  return currentCartArr.find((ci) => ci.itemId == req.body.itemId && ci.size === req.body.size);
+function isItemVariantInCartAlready(currentCartArr, body) {
+  return currentCartArr.find((ci) => ci.itemId == body.itemId && ci.size === body.size);
 }
 
 module.exports = router;
