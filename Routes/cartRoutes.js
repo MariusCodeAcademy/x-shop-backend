@@ -38,9 +38,6 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
 
 // add item to cart
 router.post('/api/shop/cart/:userId', async (req, res) => {
-  console.log('got item to add to cart');
-  // console.log(req.body);
-
   try {
     // ar toks krepselis existuoja
     const currentCart = await Cart.findOne({ userId: req.params.userId }).exec();
@@ -53,22 +50,10 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
       //currentCartArr esamas krepselis db
       // req.body = naujas item i krepseli
       const currentCartArr = currentCart.cart;
-      const isItemInCartAlready = currentCartArr.find(
-        (ci) => ci.itemId == req.body.itemId && ci.size === req.body.size
-      );
-      if (isItemInCartAlready) {
-        // qty ++
-        isItemInCartAlready.quantity++;
-        console.log('qty++');
-      } else {
-        console.log('item push');
-        currentCartArr.push(req.body);
-      }
+      increaseQtyOrAddNewItem(isItemVariantInCartAlready(currentCartArr), currentCartArr, req.body);
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
       res.json({ msg: 'now in cart', currentCart });
     }
-
-    // res.json('testing');
   } catch (err) {
     res.json(err);
   }
@@ -80,4 +65,18 @@ async function createNewCart(userId, body) {
   await newCart.save();
   return newCart.cart;
 }
+
+function increaseQtyOrAddNewItem(isItemInCartAlready, currentCartArr, body) {
+  if (isItemInCartAlready) {
+    // qty ++
+    isItemInCartAlready.quantity++;
+  } else {
+    currentCartArr.push(body);
+  }
+}
+
+function isItemVariantInCartAlready(currentCartArr) {
+  return currentCartArr.find((ci) => ci.itemId == req.body.itemId && ci.size === req.body.size);
+}
+
 module.exports = router;
