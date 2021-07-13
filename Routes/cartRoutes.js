@@ -6,13 +6,17 @@ const router = express.Router();
 // get count of carts of a user
 router.get('/api/shop/cart/count/:userId', async (req, res) => {
   // gauti ta karta kurios userId yra lygus parametruose paduotam :userId
-  const currentUserCartObj = await Cart.findOne({ userId: req.params.userId }).exec();
-  console.log(' currentUserCartObj', currentUserCartObj);
-  if (currentUserCartObj && currentUserCartObj.cart) {
-    // grazinti co masyvo ilgi
-    return res.json(currentUserCartObj.cart.length);
+  try {
+    const currentUserCartObj = await Cart.findOne({ userId: req.params.userId }).exec();
+    console.log(' currentUserCartObj', currentUserCartObj);
+    if (currentUserCartObj && currentUserCartObj.cart) {
+      // grazinti co masyvo ilgi
+      return res.json(currentUserCartObj.cart.length);
+    }
+    res.status(200).json(0);
+  } catch (err) {
+    res.json(err);
   }
-  res.status(200).json(0);
 });
 
 // get user cart
