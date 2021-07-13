@@ -42,8 +42,10 @@ Content-Type: application/json
 }
 
 ### CART ==================
-
-GET http://localhost:4000/api/shop/cart/superSecret 
+### single cart for user
+GET http://localhost:4000/api/shop/cart/60e7dc4791c124eb96296b0c 
+###  cart count for user
+GET http://localhost:4000/api/shop/cart/count/60e7dc4791c124eb96296b0c 
 
 ### add item to cart
 POST http://localhost:4000/api/shop/cart/1234
