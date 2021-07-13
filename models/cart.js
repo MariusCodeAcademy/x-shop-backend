@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // reikia apibrezti kokio tipo duomenys bus saugomi DB
 
 // { title: string, body: string, .. }
-const reqStiring = {
+const reqString = {
   type: String,
   required: true,
 };
@@ -22,10 +22,12 @@ const cartSchema = new Schema(
     },
     cart: [
       {
+        title: reqString,
+        image: reqString,
         price: reqNumber,
-        color: reqStiring,
-        size: reqStiring,
-        sku: reqStiring,
+        color: reqString,
+        size: reqString,
+        sku: reqString,
         itemId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'shopItem',
