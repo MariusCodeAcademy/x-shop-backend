@@ -38,27 +38,26 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
 
 // add item to cart
 router.post('/api/shop/cart/:userId', async (req, res) => {
-  console.log('add to cart route');
-  console.log(req.body);
-  console.log('we made cartItem');
-  console.log(shopItemToCartItem(req.body));
+  // console.log('add to cart route');
+  // console.log(req.body);
+  // console.log('we made cartItem');
+  // console.log(shopItemToCartItem(req.body));
 
-  res.status(200).json();
-  return;
+  // res.status(200).json();
+  // return;
 
   try {
     // ar toks krepselis existuoja
     const currentCart = await Cart.findOne({ userId: req.params.userId }).exec();
     console.log(' currentCart', currentCart);
-    // jei jau yra toks cart tai mes norim prideti prie cart objektu
+    // jei krepselop siam vartotojui nera sukurta
     if (!currentCart) {
-      console.log('new cart');
+      // console.log('new cart');
       const newCart = await createNewCart(req.params.userId, req.body);
       res.json({ msg: 'created a cart', newCart: newCart });
     } else {
-      // count nelygu nuliui cartas siam vartotojui egzistuoja norim prideti i cart
-      //currentCartArr esamas krepselis db
-      // req.body = naujas item i krepseli
+      // vartotojas jau turi kreplseli
+      // arba padidinti kieki vienetu jei ta pati preke arba prideti nauja i krepseli
       const currentCartArr = currentCart.cart;
       increaseQtyOrAddNewItem(
         isItemVariantInCartAlready(currentCartArr, req.body),
@@ -66,7 +65,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
         req.body
       );
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
-      res.json({ msg: 'now in cart', currentCart });
+      res.json({ msg: 'add item to cart', currentCart });
     }
   } catch (err) {
     res.json(err);
@@ -119,23 +118,23 @@ function shopItemToCartItem(shopItem) {
 }
 
 async function createNewCart(userId, body) {
-  const newCart = new Cart({ userId: userId, cart: [body] });
+  const newCart = new Cart({ userId: userId, cart: [shopItemToCartItem(body)] });
   await newCart.save();
   return newCart.cart;
 }
 
-function increaseQtyOrAddNewItem(isItemInCartAlready, currentCartArr, body) {
-  if (isItemInCartAlready) {
+function increaseQtyOrAddNewItem(didWeFoundThisItem, currentCartArr, body) {
+  if (didWeFoundThisItem) {
     // qty ++
     console.log('++');
-    isItemInCartAlready.quantity++;
+    didWeFoundThisItem.quantity++;
   } else {
-    currentCartArr.push(body);
+    currentCartArr.push(shopItemToCartItem(body));
   }
 }
 
 function isItemVariantInCartAlready(currentCartArr, body) {
-  return currentCartArr.find((ci) => ci.itemId == body.itemId && ci.size === body.size);
+  return currentCartArr.find((ci) => ci.itemId == body._id);
 }
 
 module.exports = router;
