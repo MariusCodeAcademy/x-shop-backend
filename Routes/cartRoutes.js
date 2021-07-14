@@ -38,6 +38,11 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
 
 // add item to cart
 router.post('/api/shop/cart/:userId', async (req, res) => {
+  console.log('add to cart route');
+  console.log(req.body);
+  res.status(200).json();
+  return;
+
   try {
     // ar toks krepselis existuoja
     const currentCart = await Cart.findOne({ userId: req.params.userId }).exec();
@@ -66,6 +71,34 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
 });
 
 //  helper fn
+
+function shopItemToCartItem() {
+  /*
+  shop item
+  {
+  images: [ 1, 2, 3 ],
+  _id: '60ee82dc057db7c88f4ab4cb',
+  title: 'Trench Biker Jeans',
+  price: 111.99,
+  image: 'denim_jeans_01_',
+  color: 'blue',
+  size: 'normal',
+  quantity: 8,
+  sku: 'jeans_01',
+  category: {
+    _id: '60e593c3bf4b829b3784a7b3',
+    title: 'Jeans',
+    createdAt: '2021-07-07T11:45:07.205Z',
+    updatedAt: '2021-07-07T11:45:07.205Z',
+    __v: 0
+  },
+  createdAt: '2021-07-14T06:23:24.665Z',
+  updatedAt: '2021-07-14T06:23:24.665Z',
+  __v: 0
+}
+  */
+}
+
 async function createNewCart(userId, body) {
   const newCart = new Cart({ userId: userId, cart: [body] });
   await newCart.save();
