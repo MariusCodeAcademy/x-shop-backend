@@ -1,23 +1,13 @@
 const express = require('express');
 const ShopItem = require('../models/shopItem');
 const router = express.Router();
+const newItemData = require('../models/stock');
 
 // sukurti nauja item
 router.post('/api/shop/items/new', (req, res) => {
   console.log(req.body);
 
-  const newItemData = {
-    title: 'Autum best shoes',
-    price: 299.99,
-    image: 'foot_autum_01_',
-    color: 'green',
-    size: 'normal',
-    quantity: 3,
-    images: [1, 2, 3, 4],
-    sku: 'autum_01',
-    category: '60e593bbbf4b829b3784a7b1',
-  };
-  const newItem = new ShopItem(newItemData);
+  const newItem = new ShopItem(newItemData[1]);
 
   newItem
     .save()

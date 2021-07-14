@@ -54,7 +54,7 @@ const newItemData = [
     quantity: 8,
     images: [1, 2, 3],
     sku: 'jeans_01',
-    category: '60e593b1bf4b829b3784a7af',
+    category: '60e593c3bf4b829b3784a7b3',
   },
 ];
 
