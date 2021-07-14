@@ -40,6 +40,9 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
 router.post('/api/shop/cart/:userId', async (req, res) => {
   console.log('add to cart route');
   console.log(req.body);
+  console.log('we made cartItem');
+  console.log(shopItemToCartItem(req.body));
+
   res.status(200).json();
   return;
 
@@ -72,7 +75,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
 
 //  helper fn
 
-function shopItemToCartItem() {
+function shopItemToCartItem(shopItem) {
   /*
   shop item
   {
@@ -85,18 +88,34 @@ function shopItemToCartItem() {
   size: 'normal',
   quantity: 8,
   sku: 'jeans_01',
-  category: {
-    _id: '60e593c3bf4b829b3784a7b3',
-    title: 'Jeans',
-    createdAt: '2021-07-07T11:45:07.205Z',
-    updatedAt: '2021-07-07T11:45:07.205Z',
-    __v: 0
-  },
-  createdAt: '2021-07-14T06:23:24.665Z',
-  updatedAt: '2021-07-14T06:23:24.665Z',
-  __v: 0
+  category: 4545454
 }
+  cart item
+  cart: [
+      {
+        title: reqString,
+        image: reqString,
+        price: reqNumber,
+        color: reqString,
+        size: reqString,
+        sku: reqString,
+        itemId: 45645645
+        quantity: 1
+        },
+      },
+    ],
   */
+  const { title, image, price, salePrice, color, size, sku, _id: itemId } = shopItem;
+  return {
+    title,
+    image,
+    price,
+    salePrice,
+    color,
+    size,
+    sku,
+    itemId,
+  };
 }
 
 async function createNewCart(userId, body) {
