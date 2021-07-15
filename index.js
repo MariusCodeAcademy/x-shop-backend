@@ -11,7 +11,11 @@ const PORT = 4000;
 
 // prisijungimas prie duomenu bazes
 mongoose
-  .connect(process.env.MONGO_CONNECT_STIRNG, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_CONNECT_STIRNG, {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then((result) => {
     console.log('Conneced to Mongo ooooooooose');
   })

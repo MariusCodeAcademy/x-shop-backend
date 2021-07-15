@@ -85,7 +85,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
       );
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
       // sumazinam item quantity kuris buvo nupirktas
-      updateShopItemStock(req.body._id, -1);
+      await updateShopItemStock(req.body._id, req.body.quantity - 1);
       res.json({ msg: 'add item to cart', currentCart });
     }
   } catch (err) {
@@ -95,9 +95,14 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
 
 //  helper fn
 
-async function updateShopItemStock(shopItemId, difference) {
-  console.log(' updateShopItemStock');
-  console.log({ shopItemId, difference });
+async function updateShopItemStock(shopItemId, newQty) {
+  //  gauti kiek yra item in stock?
+  // naudojan ShopItem modeli, surasti ir atnaujinti shopItemo kurio id === shopItemId
+  // kieki/stock i ta reiksme kuria gaunam kaip newQty
+  // findBtIdAndUpdate funkicja turi 2 argumentus, id ir ka pakeisti
+  // console log resultata kad pamati ar pasikeite
+
+  await ShopItem.findByIdAndUpdate(shopItemId, { quantity: newQty });
 }
 
 function shopItemToCartItem(shopItem) {
