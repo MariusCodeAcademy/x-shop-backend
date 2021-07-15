@@ -38,11 +38,20 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
 
 // sukurti update cart quantity PUT route /api/shop/cart/:userId
 router.put('/api/shop/cart/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const { cartItemId, newQty } = req.body;
   // susirasti carta pagal userId,
-  console.log(`cart id: ${req.body.cartItemId}`);
+  const foundCartObj = await Cart.findOne({ userId: userId }).exec();
+  console.log(' foundCartObj', foundCartObj.cart);
+
   // paieskoti tam carte item pagal cartId
+  const foundCartItemToBeUpdated = foundCartObj.cart.find((cartItem) => cartItem._id == cartItemId);
+  // higher level example
+  // const foundCartItemToBeUpdated = cart.find(({ _id }) => _id == cartItemId);
   // atnaujinti kieki to item pagal newQty
-  res.json('atnaujinimas in progress');
+  foundCartItemToBeUpdated.quantity = newQty;
+  const saveResult = await foundCartObj.save();
+  res.json({ msg: 'atnaujinimas in progress', saveResult });
 });
 // gauti atsakyma json pavidalu req.body arba isloginti req body
 
