@@ -73,6 +73,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
     if (!currentCart) {
       // console.log('new cart');
       const newCart = await createNewCart(req.params.userId, req.body);
+      await updateShopItemStock(req.body._id, req.body.quantity - 1);
       res.json({ msg: 'created a cart', newCart: newCart });
     } else {
       // vartotojas jau turi kreplseli
@@ -102,7 +103,10 @@ async function updateShopItemStock(shopItemId, newQty) {
   // findBtIdAndUpdate funkicja turi 2 argumentus, id ir ka pakeisti
   // console log resultata kad pamati ar pasikeite
 
-  await ShopItem.findByIdAndUpdate(shopItemId, { quantity: newQty });
+  // const updateResult = await ShopItem.findByIdAndUpdate(shopItemId, { quantity: newQty }).exec();
+  const currentShopItem = await ShopItem.findById(shopItemId);
+  currentShopItem.quantity = newQty;
+  await currentShopItem.save();
 }
 
 function shopItemToCartItem(shopItem) {
