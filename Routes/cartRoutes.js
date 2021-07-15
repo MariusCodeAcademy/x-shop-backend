@@ -8,7 +8,7 @@ router.get('/api/shop/cart/count/:userId', async (req, res) => {
   // gauti ta karta kurios userId yra lygus parametruose paduotam :userId
   try {
     const currentUserCartObj = await Cart.findOne({ userId: req.params.userId }).exec();
-    console.log(' currentUserCartObj', currentUserCartObj);
+    // console.log(' currentUserCartObj', currentUserCartObj);
     if (currentUserCartObj && currentUserCartObj.cart) {
       // grazinti co masyvo ilgi
       return res.json(currentUserCartObj.cart.length);
@@ -36,6 +36,16 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
   }
 });
 
+// sukurti update cart quantity PUT route /api/shop/cart/:userId
+router.put('/api/shop/cart/:userId', async (req, res) => {
+  // susirasti carta pagal userId,
+  console.log(`cart id: ${req.body.cartItemId}`);
+  // paieskoti tam carte item pagal cartId
+  // atnaujinti kieki to item pagal newQty
+  res.json('atnaujinimas in progress');
+});
+// gauti atsakyma json pavidalu req.body arba isloginti req body
+
 // add item to cart
 router.post('/api/shop/cart/:userId', async (req, res) => {
   // console.log('add to cart route');
@@ -49,7 +59,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
   try {
     // ar toks krepselis existuoja
     const currentCart = await Cart.findOne({ userId: req.params.userId }).exec();
-    console.log(' currentCart', currentCart);
+    // console.log(' currentCart', currentCart);
     // jei krepselop siam vartotojui nera sukurta
     if (!currentCart) {
       // console.log('new cart');
@@ -108,8 +118,7 @@ function shopItemToCartItem(shopItem) {
   return {
     title,
     image,
-    price,
-    salePrice,
+    price: salePrice || price,
     color,
     size,
     sku,
@@ -129,6 +138,7 @@ function increaseQtyOrAddNewItem(didWeFoundThisItem, currentCartArr, body) {
     console.log('++');
     didWeFoundThisItem.quantity++;
   } else {
+    console.log('new item to cart');
     currentCartArr.push(shopItemToCartItem(body));
   }
 }
