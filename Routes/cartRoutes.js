@@ -26,7 +26,7 @@ router.get('/api/shop/cart/:userId', async (req, res) => {
   try {
     // we find all carts of all users
     const allCarts = await Cart.find();
-    console.log(allCarts);
+    // console.log(allCarts);
     // find current user cart
     const currentUserCart = allCarts.find((u) => u.userId == req.params.userId);
 
@@ -42,7 +42,6 @@ router.put('/api/shop/cart/:userId', async (req, res) => {
   const { cartItemId, newQty } = req.body;
   // susirasti carta pagal userId,
   const foundCartObj = await Cart.findOne({ userId: userId }).exec();
-  console.log(' foundCartObj', foundCartObj.cart);
 
   // paieskoti tam carte item pagal cartId
   const foundCartItemToBeUpdated = foundCartObj.cart.find((cartItem) => cartItem._id == cartItemId);
@@ -51,6 +50,7 @@ router.put('/api/shop/cart/:userId', async (req, res) => {
   // atnaujinti kieki to item pagal newQty
   foundCartItemToBeUpdated.quantity = newQty;
   const saveResult = await foundCartObj.save();
+
   res.json({ msg: 'atnaujinimas in progress', saveResult });
 });
 // gauti atsakyma json pavidalu req.body arba isloginti req body
@@ -84,6 +84,8 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
         req.body
       );
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
+      // sumazinam item quantity kuris buvo nupirktas
+      updateShopItemStock(req.body._id, -1);
       res.json({ msg: 'add item to cart', currentCart });
     }
   } catch (err) {
@@ -92,6 +94,11 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
 });
 
 //  helper fn
+
+async function updateShopItemStock(shopItemId, difference) {
+  console.log(' updateShopItemStock');
+  console.log({ shopItemId, difference });
+}
 
 function shopItemToCartItem(shopItem) {
   /*
