@@ -41,6 +41,7 @@ router.put('/api/shop/cart/:userId', async (req, res) => {
   const userId = req.params.userId;
   const { cartItemId, newQty } = req.body;
   // susirasti carta pagal userId,
+  console.log(' cartItemId, newQty', cartItemId, newQty);
   const foundCartObj = await Cart.findOne({ userId: userId }).exec();
 
   // paieskoti tam carte item pagal cartId
@@ -48,9 +49,10 @@ router.put('/api/shop/cart/:userId', async (req, res) => {
   // higher level example
   // const foundCartItemToBeUpdated = cart.find(({ _id }) => _id == cartItemId);
   // atnaujinti kieki to item pagal newQty
+  const difference = newQty - foundCartItemToBeUpdated.quantity;
   foundCartItemToBeUpdated.quantity = newQty;
   const saveResult = await foundCartObj.save();
-
+  // updateShopItemStock(foundCartItemToBeUpdated.itemId, difference);
   res.json({ msg: 'atnaujinimas in progress', saveResult });
 });
 // gauti atsakyma json pavidalu req.body arba isloginti req body
@@ -73,7 +75,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
     if (!currentCart) {
       // console.log('new cart');
       const newCart = await createNewCart(req.params.userId, req.body);
-      await updateShopItemStock(req.body._id, req.body.quantity - 1);
+      await updateShopItemStock(req.body._id, -1);
       res.json({ msg: 'created a cart', newCart: newCart });
     } else {
       // vartotojas jau turi kreplseli
@@ -86,7 +88,7 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
       );
       await Cart.updateOne({ userId: req.params.userId }, { cart: currentCartArr });
       // sumazinam item quantity kuris buvo nupirktas
-      await updateShopItemStock(req.body._id, req.body.quantity - 1);
+      await updateShopItemStock(req.body._id, -1);
       res.json({ msg: 'add item to cart', currentCart });
     }
   } catch (err) {
@@ -96,16 +98,16 @@ router.post('/api/shop/cart/:userId', async (req, res) => {
 
 //  helper fn
 
-async function updateShopItemStock(shopItemId, newQty) {
+async function updateShopItemStock(shopItemId, difference) {
   //  gauti kiek yra item in stock?
   // naudojan ShopItem modeli, surasti ir atnaujinti shopItemo kurio id === shopItemId
-  // kieki/stock i ta reiksme kuria gaunam kaip newQty
+  // kieki/stock i ta reiksme kuria gaunam kaip difference
   // findBtIdAndUpdate funkicja turi 2 argumentus, id ir ka pakeisti
   // console log resultata kad pamati ar pasikeite
 
-  // const updateResult = await ShopItem.findByIdAndUpdate(shopItemId, { quantity: newQty }).exec();
+  // const updateResult = await ShopItem.findByIdAndUpdate(shopItemId, { quantity: difference }).exec();
   const currentShopItem = await ShopItem.findById(shopItemId);
-  currentShopItem.quantity = newQty;
+  currentShopItem.quantity = currentShopItem.quantity + difference;
   await currentShopItem.save();
 }
 
