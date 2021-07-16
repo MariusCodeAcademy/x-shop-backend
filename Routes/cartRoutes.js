@@ -3,6 +3,18 @@ const Cart = require('../models/cart');
 const ShopItem = require('../models/shopItem');
 const router = express.Router();
 
+// handle Delete cart item
+router.put('/api/shop/cart/delete/:userId', async (req, res) => {
+  try {
+    // res.json({ userId: req.params.userId, cartId: req.body.itemId });
+    const userId = req.params.userId;
+    const cartIndividualId = req.body.itemId;
+    const foundCartObj = await Cart.findOne({ userId: userId }).exec();
+    const filteredCart = foundCartObj.cart.filter(({ itemId }) => itemId != cartIndividualId);
+    res.json(filteredCart);
+  } catch (error) {}
+});
+
 // get count of carts of a user
 router.get('/api/shop/cart/count/:userId', async (req, res) => {
   // gauti ta karta kurios userId yra lygus parametruose paduotam :userId
