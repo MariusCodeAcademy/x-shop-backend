@@ -49,10 +49,11 @@ router.put('/api/shop/cart/:userId', async (req, res) => {
   // higher level example
   // const foundCartItemToBeUpdated = cart.find(({ _id }) => _id == cartItemId);
   // atnaujinti kieki to item pagal newQty
-  const difference = newQty - foundCartItemToBeUpdated.quantity;
+  const difference = foundCartItemToBeUpdated.quantity - newQty;
+  console.log(' difference', difference);
   foundCartItemToBeUpdated.quantity = newQty;
   const saveResult = await foundCartObj.save();
-  // updateShopItemStock(foundCartItemToBeUpdated.itemId, difference);
+  updateShopItemStock(foundCartItemToBeUpdated.itemId, difference);
   res.json({ msg: 'atnaujinimas in progress', saveResult });
 });
 // gauti atsakyma json pavidalu req.body arba isloginti req body
