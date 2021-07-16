@@ -10,9 +10,13 @@ router.put('/api/shop/cart/delete/:userId', async (req, res) => {
     const userId = req.params.userId;
     const cartIndividualId = req.body.itemId;
     const foundCartObj = await Cart.findOne({ userId: userId }).exec();
-    const filteredCart = foundCartObj.cart.filter(({ itemId }) => itemId != cartIndividualId);
-    res.json(filteredCart);
-  } catch (error) {}
+    foundCartObj.cart = foundCartObj.cart.filter(({ itemId }) => itemId != cartIndividualId);
+    // res.json(filteredCart);
+    const finalCartObj = await foundCartObj.save();
+    res.json(finalCartObj);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 // get count of carts of a user
