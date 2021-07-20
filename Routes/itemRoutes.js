@@ -25,6 +25,12 @@ router.get('/api/shop/items', async (req, res) => {
   }
 });
 
+// gauti itemus pagal categorija
+router.get('/api/shop/items/category/:catId', (req, res) => {
+  res.json('lygtais norite gauti itemus pagal kategorija? ');
+  // Naudoti ShopItem modeli ir rasti visus irasus kuriu category yra lygu :catId
+});
+
 // gauti single item
 router.get('/api/shop/items/:id', async (req, res) => {
   try {
