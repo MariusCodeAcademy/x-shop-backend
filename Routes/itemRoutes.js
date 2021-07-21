@@ -26,8 +26,15 @@ router.get('/api/shop/items', async (req, res) => {
 });
 
 // gauti itemus pagal categorija
-router.get('/api/shop/items/category/:catId', (req, res) => {
-  res.json('lygtais norite gauti itemus pagal kategorija? ');
+router.get('/api/shop/items/category/:catId', async (req, res) => {
+  const catId = req.params.catId;
+  // res.json('lygtais norite gauti itemus pagal kategorija? ');
+  try {
+    const itemsFoundInCategory = await ShopItem.find({ category: catId });
+    res.json(itemsFoundInCategory);
+  } catch (error) {
+    res.json(error);
+  }
   // Naudoti ShopItem modeli ir rasti visus irasus kuriu category yra lygu :catId
 });
 
