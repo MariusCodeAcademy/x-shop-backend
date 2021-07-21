@@ -33,7 +33,10 @@ router.get('/api/shop/items/category/:catId', async (req, res) => {
     const itemsFoundInCategory = await ShopItem.find({ category: catId });
     res.json(itemsFoundInCategory);
   } catch (error) {
-    res.json(error);
+    // kol kuriam aplikacija
+    // res.json(error);
+    // produkcijoj naudojam
+    res.sendStatus(500);
   }
   // Naudoti ShopItem modeli ir rasti visus irasus kuriu category yra lygu :catId
 });
